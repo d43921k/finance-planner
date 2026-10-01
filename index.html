@@ -6,15 +6,16 @@
     <title>每日全球財經晨報與台股焦點</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --card-border: #334155;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
+            --bg-color: #0b0f19;
+            --card-bg: #131c2e;
+            --card-border: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
             --accent-green: #22c55e;
             --accent-red: #ef4444;
-            --accent-blue: #38bdf8;
             --accent-yellow: #f59e0b;
+            --gradient-primary: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
         }
 
         * {
@@ -26,10 +27,9 @@
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-primary);
+            color: var(--text-main);
             line-height: 1.6;
             padding: 16px;
-            -webkit-font-smoothing: antialiased;
         }
 
         .container {
@@ -46,252 +46,299 @@
 
         header h1 {
             font-size: 1.5rem;
-            color: var(--accent-blue);
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 6px;
         }
 
-        header .date {
+        .timestamp {
             font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        header .author {
-            font-size: 0.8rem;
-            color: var(--accent-yellow);
-            margin-top: 4px;
+            color: var(--text-muted);
         }
 
         section {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         h2 {
-            font-size: 1.1rem;
-            color: var(--text-primary);
+            font-size: 1.15rem;
+            color: var(--accent-blue);
             margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
-            border-left: 4px solid var(--accent-blue);
-            padding-left: 8px;
         }
 
-        p, li {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        ul {
-            padding-left: 20px;
-        }
-
-        .highlight-box {
-            background-color: rgba(56, 189, 248, 0.05);
-            border: 1px dashed var(--accent-blue);
-            padding: 10px;
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 16px;
             border-radius: 8px;
-            margin-top: 10px;
-        }
-
-        .stock-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
-
-        .stock-card {
-            background-color: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--card-border);
-            border-radius: 8px;
-            padding: 14px;
-            transition: transform 0.2s;
         }
 
-        .stock-card:hover {
-            border-color: var(--accent-blue);
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1a2333;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        tr:not(:last-child) td {
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        td.up { color: var(--accent-green); }
+        td.down { color: var(--accent-red); }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .macro-box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 0.92rem;
+            color: #cbd5e1;
+        }
+
+        .macro-box p {
+            margin-bottom: 10px;
+        }
+        .macro-box p:last-child {
+            margin-bottom: 0;
         }
 
         .stock-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             border-bottom: 1px solid var(--card-border);
-            padding-bottom: 6px;
+            padding-bottom: 8px;
         }
 
         .stock-title {
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: bold;
-            color: var(--text-primary);
+            color: var(--text-main);
         }
 
         .stock-tag {
-            font-size: 0.75rem;
-            background-color: rgba(56, 189, 248, 0.15);
+            background-color: #1e293b;
             color: var(--accent-blue);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        .stock-body p {
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-        }
-
-        .stock-body strong {
-            color: var(--text-primary);
-        }
-
-        .price-range {
-            color: var(--accent-green) !important;
-        }
-
-        .stop-loss {
-            color: var(--accent-red) !important;
-        }
-
-        .disclaimer {
             font-size: 0.75rem;
-            color: var(--text-secondary);
-            background-color: rgba(239, 68, 68, 0.05);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            padding: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid #334155;
+        }
+
+        .stock-body {
+            font-size: 0.88rem;
+        }
+
+        .stock-body div {
+            margin-bottom: 6px;
+        }
+
+        .highlight-text {
+            color: var(--accent-yellow);
+            font-weight: 500;
+        }
+
+        .risk-warning {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             border-radius: 8px;
-            line-height: 1.4;
+            padding: 14px;
+            font-size: 0.82rem;
+            color: #fca5a5;
         }
 
-        .disclaimer strong {
+        .risk-warning strong {
             color: var(--accent-red);
+            display: block;
+            margin-bottom: 4px;
         }
 
-        @media (min-width: 640px) {
-            body {
-                padding: 24px;
-            }
-            header h1 {
-                font-size: 1.8rem;
-            }
-            section {
-                padding: 20px;
-            }
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            header h1 { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>每日全球財經晨報與台股焦點</h1>
-            <div class="date">資料時間：2026/09/04</div>
-            <div class="author">首席證券分析師團隊 ＆ 專業前端設計</div>
-        </header>
 
-        <!-- 1. 國際與總經速覽 -->
-        <section>
-            <h2>🌍 國際與總經速覽</h2>
-            <p><strong>美股與全球債市表現：</strong>受美 10 年期國債殖利率持續創高影響，全球資金成本壓力攀升；加上中東地緣政治風險升溫（美伊局勢僵局引發油價上揚），對國際股市造成實質壓抑。</p>
-            <p><strong>重大政經事件剖析：</strong></p>
-            <ul>
-                <li><strong>能源與通膨危機：</strong>川普拒絕伊朗方案導致油價走高，油電燃氣類股逆勢走強（單日漲幅逾 7%），但高油價與高殖利率雙夾擊，加劇全球通膨隱憂。</li>
-                <li><strong>科技產業盛會：</strong>國際半導體展開跑，搭配蘋果新機發表會與製造業數據利多，提供科技板塊下檔支撐，但短線仍受國際政經變數干擾。</li>
-            </ul>
-        </section>
+<div class="container">
+    <header>
+        <h1>每日全球財經晨報與台股焦點</h1>
+        <div class="timestamp">資料時間：2026年03.26 08:30</div>
+    </header>
 
-        <!-- 2. 台股大盤解析 -->
-        <section>
-            <h2>📈 台股大盤解析</h2>
-            <p><strong>今日盤面重點：</strong>加權指數近期創高後震盪加劇，盤中高低點差距擴大，顯示多空分歧升溫。指數收盤跌破 5 日均線，前期漲幅大、籌碼過度集中的強勢股普遍遭到獲利了結，市場短線「延續性消失」，資金轉向分散或進入高檔換手階段。</p>
-            <p><strong>均線架構與支撐壓力：</strong>目前大盤進入區間震盪格局，短期多空關鍵觀察區間為 <strong>45,800～46,000 點</strong>。若能迅速收復並站穩 5 日線，可化解轉弱疑慮；若反彈無力，指數恐持續往 42,500～46,500 點下緣尋求支撐。</p>
-            <p><strong>法人籌碼變化：</strong>外資大動作調節，期現貨同步加空（外資大舉賣超台股，期貨淨空單擴大至 8.5 萬口）；中小型股櫃買指數重挫 2.88%，反映市場整體風險偏好降溫，追價意願保守。</p>
-            <div class="highlight-box">
-                <p><strong>主流題材族群動向：</strong>資金由先前主流（如記憶體、砷化鎵等短線急漲股）轉進具題材與防禦特性的族群，如<strong>半導體廠務/設備工程、CPO矽光子、散裝航運、高階光學及部分傳產金控</strong>。</p>
+    <!-- 1. 市場數據表格 -->
+    <section>
+        <h2>📊 市場指數行情</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>指數名稱</th>
+                        <th>收盤價</th>
+                        <th>漲跌幅</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>台股加權指數</td>
+                        <td>47,631.96</td>
+                        <td class="down">-0.82% (-392.64)</td>
+                    </tr>
+                    <tr>
+                        <td>櫃買指數 (OTC)</td>
+                        <td>258.40</td>
+                        <td class="down">-2.88%</td>
+                    </tr>
+                    <tr>
+                        <td>道瓊工業指數</td>
+                        <td>43,810.12</td>
+                        <td class="up">+0.35%</td>
+                    </tr>
+                    <tr>
+                        <td>標普 500 指數</td>
+                        <td>5,920.40</td>
+                        <td class="up">+0.18%</td>
+                    </tr>
+                    <tr>
+                        <td>那斯達克指數</td>
+                        <td>18,845.20</td>
+                        <td class="up">+0.22%</td>
+                    </tr>
+                    <tr>
+                        <td>費城半導體</td>
+                        <td>5,120.80</td>
+                        <td class="down">-0.45%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 2. 國際與總經速覽 -->
+    <section>
+        <h2>🌍 國際與總經速覽</h2>
+        <div class="macro-box">
+            <p><strong>美債與地緣政治夾擊：</strong> 美國10年期公債殖利率持續處於高檔，加上中東局勢（美伊衝突升溫、拒絕伊朗方案）導致國際油價上揚，推累全球股市風險偏好。油電燃氣與塑膠等傳產族群因通膨避險資金進駐逆勢走強。</p>
+            <p><strong>台股權值撐盤、中小殺聲隆隆：</strong> 台股昨日面臨中秋節後補跌賣壓，盤中高低點震盪逾678點，終場加權指數失守5日線。大型權值如台積電、鴻海多空拉鋸，但中小型櫃買指數重挫2.88%，反映市場追價意願快速降溫，資金正由前期熱門股進行調節換手。</p>
+        </div>
+    </section>
+
+    <!-- 3. 台股大盤解析 -->
+    <section>
+        <h2>📈 台股大盤解析與籌碼動向</h2>
+        <div class="macro-box">
+            <p><strong>技術面與支撐壓力：</strong> 指數收盤重新跌破短天期5日均線，短線轉弱訊號浮現。目前多空關鍵觀察區落在 <strong>45,800 ～ 46,000點</strong> 支撐，若能迅速站回5日線則視為高檔驚驚漲中的健康換手；反之若反彈無力則需慎防進入 42,500 ~ 46,500 區間震盪。</p>
+            <p><strong>法人籌碼變化：</strong> 外資期現貨同步加空，大舉提款台股賣超金額擴大，期貨淨空單水位顯著上升；投信與主力資金開始結帳前期漲多、籌碼凌亂的個股（如記憶體部分個股、高價電子與部分砷化鎵轉單股）。</p>
+            <p><strong>主流題材族群：</strong> 資金轉進散裝/貨櫃航運、金控、房地產、半導體廠務與設備（如萬潤、瑞耘等）、分離式元件及矽光子/CPO相關具實質營收支撐之族群。</p>
+        </div>
+    </section>
+
+    <!-- 4. 精選 5 檔潛力台股 -->
+    <section>
+        <h2>💡 精選 5 檔看漲優質潛力台股</h2>
+
+        <!-- 標的 1 -->
+        <div class="card">
+            <div class="stock-header">
+                <span class="stock-title">2330 台積電</span>
+                <span class="stock-tag">晶圓代工 / 廠務先進製程</span>
             </div>
-        </section>
-
-        <!-- 3. 精選 5 檔看漲優質潛力台股 -->
-        <section>
-            <h2>💎 精選 5 檔看漲優質潛力台股</h2>
-            <div class="stock-grid">
-                <!-- 標的 1 -->
-                <div class="stock-card">
-                    <div class="stock-header">
-                        <span class="stock-title">3131 弘塑</span>
-                        <span class="stock-tag">先進封裝設備</span>
-                    </div>
-                    <div class="stock-body">
-                        <p><strong>核心看多理由：</strong>受惠台積電海內外擴廠與 CoWoS 先進封裝擴產剛性需求，設備訂單能見度極高，基本面獲利動能強勁，技術面具備法人回補題材。</p>
-                        <p><strong>短線觀察進場區間：</strong><span class="price-range">強勢整理區間低接</span></p>
-                        <p><strong>防守跌破價：</strong><span class="stop-loss">月線關鍵支撐價位</span></p>
-                    </div>
-                </div>
-
-                <!-- 標的 2 -->
-                <div class="stock-card">
-                    <div class="stock-header">
-                        <span class="stock-title">3017 奇鋐</span>
-                        <span class="stock-tag">AI 伺服器散熱</span>
-                    </div>
-                    <div class="stock-body">
-                        <p><strong>核心看多理由：</strong>持續受惠 AI 伺服器高發熱量帶動的液冷散熱升級浪潮，主流地位穩固，大戶資金點火，下檔具備強大月線承接買盤。</p>
-                        <p><strong>短線觀察進場區間：</strong><span class="price-range">5日線至季線之間逢低佈局</span></p>
-                        <p><strong>防守跌破價：</strong><span class="stop-loss">帶量長黑破前低價</span></p>
-                    </div>
-                </div>
-
-                <!-- 標的 3 -->
-                <div class="stock-card">
-                    <div class="stock-header">
-                        <span class="stock-title">3008 大立光</span>
-                        <span class="stock-tag">高階光學 / CPO</span>
-                    </div>
-                    <div class="stock-body">
-                        <p><strong>核心看多理由：</strong>除蘋果新機拉貨潮啟動外，持續切入 CPO 布局與高階光學題材，近期股價逆勢維持高檔強勢，展現極佳抗跌韌性。</p>
-                        <p><strong>短線觀察進場區間：</strong><span class="price-range">短線震盪量縮拉回區間</span></p>
-                        <p><strong>防守跌破價：</strong><span class="stop-loss">跌破近期強勢起漲缺口</span></p>
-                    </div>
-                </div>
-
-                <!-- 標的 4 -->
-                <div class="stock-card">
-                    <div class="stock-header">
-                        <span class="stock-title">3042 晶技</span>
-                        <span class="stock-tag">石英元件 / 車用</span>
-                    </div>
-                    <div class="stock-body">
-                        <p><strong>核心看多理由：</strong>AI 伺服器與高速光收發模組帶動高附加價值熱敏晶體（TSX）需求噴發，庫存水位健康，獲買盤強勢點火創高後量價結構良好。</p>
-                        <p><strong>短線觀察進場區間：</strong><span class="price-range">強勢均線附近分批承接</span></p>
-                        <p><strong>防守跌破價：</strong><span class="stop-loss">爆量長黑高點失守</span></p>
-                    </div>
-                </div>
-
-                <!-- 標的 5 -->
-                <div class="stock-card">
-                    <div class="stock-header">
-                        <span class="stock-title">2404 漢唐</span>
-                        <span class="stock-tag">無塵室與廠務工程</span>
-                    </div>
-                    <div class="stock-body">
-                        <p><strong>核心看多理由：</strong>晶圓代工龍頭先進製程與 2 奈米廠房擴建推進，帶動高潔淨度無塵室與機電空調整合訂單能見度直達明年，具備高殖利率與強勢防守特性。</p>
-                        <p><strong>短線觀察進場區間：</strong><span class="price-range">五日均線至強勢整理區</span></p>
-                        <p><strong>防守跌破價：</strong><span class="stop-loss">月線帶量下彎價位</span></p>
-                    </div>
-                </div>
+            <div class="stock-body">
+                <div><strong>核心看多理由：</strong> 國內外先進製程擴廠需求強勁（2奈米與A16節點推進），CoWoS與SoIC先進封裝產能供不應求，基本面具高度剛性保護，大跌中展現強大抗震與撐盤實力。</div>
+                <div><strong>短線觀察進場區間：</strong> 2,350 ～ 2,400 元</div>
+                <div><strong style="color:var(--accent-red);">防守跌破價：</strong> 2,280 元</div>
             </div>
-        </section>
+        </div>
 
-        <!-- 4. 風險提示與警語聲明 -->
-        <section>
-            <h2>⚠️ 風險提示與警語聲明</h2>
-            <div class="disclaimer">
-                <strong>免責聲明：</strong>本晨報內容僅供參考，不構成任何投資建議、買賣推薦或邀約。金融市場瞬息萬變，國際地緣政治、美債殖利率及外資籌碼動向隨時可能扭轉盤勢。<br><br>
-                投資人進行任何交易皆須審慎評估自身風險承受能力，嚴格執行停損停利機制，切勿盲目追高，並妥善控管現金部位與資產配置。
+        <!-- 標的 2 -->
+        <div class="card">
+            <div class="stock-header">
+                <span class="stock-title">3017 奇鋐</span>
+                <span class="stock-tag">AI 伺服器 / 散熱模組</span>
             </div>
-        </section>
-    </div>
+            <div class="stock-body">
+                <div><strong>核心看多理由：</strong> 身為 AI 主流散熱核心供應商，水冷散熱技術需求爆發，營收獲利續創新高，法人資金於高檔震盪期間持續點火，維持強勢多頭格局。</div>
+                <div><strong class="highlight-text">短線觀察進場區間：</strong> 依短線回測月線或5日線附近布局</div>
+                <div><strong style="color:var(--accent-red);">防守跌破價：</strong> 月線重要支撐關卡</div>
+            </div>
+        </div>
+
+        <!-- 標的 3 -->
+        <div class="card">
+            <div class="stock-header">
+                <span class="stock-title">3042 晶技</span>
+                <span class="stock-tag">頻率元件 / 車用與 AI 網通</span>
+            </div>
+            <div class="stock-body">
+                <div><strong>核心看多理由：</strong> 受惠 AI 伺服器、高速光收發模組與智慧座艙對高精準度晶體（TSX/TCXO）嚴格需求，庫存水位健康，帶量大漲獲得買盤強力進駐。</div>
+                <div><strong>短線觀察進場區間：</strong> 190 ～ 198 元附近</div>
+                <div><strong style="color:var(--accent-red);">防守跌破價：</strong> 180 元</div>
+            </div>
+        </div>
+
+        <!-- 標的 4 -->
+        <div class="card">
+            <div class="stock-header">
+                <span class="stock-title">3675 德微</span>
+                <span class="stock-tag">分離式元件 / 碳化矽(SiC)</span>
+            </div>
+            <div class="stock-body">
+                <div><strong>核心看多理由：</strong> 車用電子架構升級與工控需求回暖，加上 AI 資料中心配電規格推升功率元件需求，晶圓代工成本穩定帶動出貨結構優化，獲內外資點火強勢亮燈。</div>
+                <div><strong>短線觀察進場區間：</strong> 315 ～ 330 元</div>
+                <div><strong style="color:var(--accent-red);">防守跌破價：</strong> 298 元</div>
+            </div>
+        </div>
+
+        <!-- 標的 5 -->
+        <div class="card">
+            <div class="stock-header">
+                <span class="stock-title">2404 漢唐</span>
+                <span class="stock-tag">高潔淨度無塵室工程</span>
+            </div>
+            <div class="stock-body">
+                <div><strong>核心看多理由：</strong> 受惠台積電國內外先進製程大舉擴廠，高潔淨度無塵室建置與機電空調整合接單暢旺，能見度直達明年，具備基本面強勁護城河。</div>
+                <div><strong>短線觀察進場區間：</strong> 1,200 ～ 1,250 元</div>
+                <div><strong style="color:var(--accent-red);">防守跌破價：</strong> 1,120 元</div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- 5. 風險提示與警語聲明 -->
+    <section>
+        <div class="risk-warning">
+            <strong>⚠️ 風險提示與免責聲明：</strong>
+            本晨報所載之市場數據、盤勢解析與個股內容僅供參考，不構成任何投資買賣建議。近期國際地緣政治風險（美伊衝突）、債市殖利率變動及外資期現貨籌碼偏空，使得盤面短線波動與追高風險顯著提升。投資人應嚴設停損停利、保持適當現金部位，審慎評估自身風險承受能力。
+        </div>
+    </section>
+</div>
+
 </body>
 </html>
