@@ -1,20 +1,21 @@
+```html
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>每日全球財經晨報與台股焦點</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --card-border: #334155;
+            --bg-color: #0b0f19;
+            --card-bg: #131c2e;
+            --card-border: #1e293b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --accent-green: #22c55e;
+            --accent-green: #10b981;
             --accent-red: #ef4444;
-            --accent-blue: #38bdf8;
-            --accent-yellow: #f59e0b;
+            --accent-blue: #3b82f6;
+            --accent-gold: #f59e0b;
         }
 
         * {
@@ -28,7 +29,7 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
-            padding: 16px;
+            padding: 12px;
         }
 
         .container {
@@ -38,44 +39,54 @@
 
         header {
             text-align: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 20px;
+            padding: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
         }
 
         header h1 {
-            font-size: 1.5rem;
-            color: var(--accent-blue);
-            margin-bottom: 8px;
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin-bottom: 6px;
+            font-weight: 700;
         }
 
-        .update-time {
-            font-size: 0.85rem;
-            color: var(--text-muted);
+        .timestamp {
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            background: rgba(245, 158, 11, 0.1);
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
         }
 
         .section-title {
-            font-size: 1.15rem;
-            margin: 24px 0 12px 0;
+            font-size: 1.1rem;
+            margin: 20px 0 10px 4px;
             padding-left: 8px;
             border-left: 4px solid var(--accent-blue);
             color: var(--text-main);
+            font-weight: 600;
         }
 
-        /* 表格樣式 */
+        /* Table Styling */
         .table-container {
             overflow-x: auto;
             margin-bottom: 16px;
-            border-radius: 8px;
+            border-radius: 10px;
             border: 1px solid var(--card-border);
+            background: var(--card-bg);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: var(--card-bg);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-align: left;
+            white-space: nowrap;
         }
 
         th, td {
@@ -84,7 +95,7 @@
         }
 
         th {
-            background-color: #111827;
+            background-color: #1a263f;
             color: var(--text-muted);
             font-weight: 600;
         }
@@ -101,309 +112,299 @@
             color: var(--accent-red);
         }
 
-        /* 內容區塊卡片 */
+        /* Card Layout */
         .card {
-            background-color: var(--card-bg);
+            background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 8px;
-            padding: 16px;
+            border-radius: 10px;
+            padding: 14px;
             margin-bottom: 12px;
         }
 
-        .card p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .card p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* 潛力個股網格 */
-        .stock-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .stock-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            padding: 16px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stock-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background-color: var(--accent-blue);
-        }
-
-        .stock-header {
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 8px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 8px;
         }
 
         .stock-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             color: var(--text-main);
         }
 
         .stock-tag {
             font-size: 0.75rem;
-            background-color: #334155;
+            background: rgba(59, 130, 246, 0.15);
             color: var(--accent-blue);
             padding: 2px 8px;
             border-radius: 4px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
-        .stock-body p {
-            font-size: 0.9rem;
-            margin-bottom: 6px;
+        .card-body p {
+            font-size: 0.85rem;
             color: var(--text-muted);
+            margin-bottom: 6px;
         }
 
-        .stock-body strong {
+        .card-body p strong {
             color: var(--text-main);
         }
 
-        .price-range {
-            display: flex;
-            gap: 16px;
+        .price-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
             margin-top: 10px;
-            padding-top: 8px;
-            border-top: 1px dashed var(--card-border);
-            font-size: 0.85rem;
+            background: #0f172a;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
         }
 
-        .price-box span {
+        .price-item span {
             display: block;
             color: var(--text-muted);
-            font-size: 0.75rem;
         }
 
-        .price-box strong {
-            font-size: 0.95rem;
+        .price-item strong {
+            font-size: 0.9rem;
         }
 
-        .buy-price {
+        .text-entry {
             color: var(--accent-green);
         }
 
-        .stop-price {
+        .text-stop {
             color: var(--accent-red);
         }
 
-        /* 風險警語 */
-        .warning-box {
-            background-color: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 24px;
+        /* Prose Content */
+        .prose-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 14px;
             font-size: 0.85rem;
-            color: #fbbf24;
+            color: var(--text-muted);
+            margin-bottom: 16px;
         }
 
-        .warning-box h4 {
-            margin-bottom: 6px;
-            font-size: 0.95rem;
+        .prose-box p {
+            margin-bottom: 8px;
+        }
+        .prose-box p:last-child {
+            margin-bottom: 0;
+        }
+        .prose-box strong {
+            color: var(--text-main);
         }
 
-        @media (min-width: 640px) {
-            .stock-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        /* Risk Warning */
+        .risk-warning {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.75rem;
+            color: #fca5a5;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .risk-warning strong {
+            color: var(--accent-red);
+            display: block;
+            margin-bottom: 4px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>【每日全球財經晨報與台股焦點】</h1>
-            <div class="update-time">資料時間：2026年10月01日 18:00</div>
-        </header>
 
-        <!-- 1. 表格：台股各大指數、美股四大指數數據 -->
-        <h2 class="section-title">1. 全球主要指數行情</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>指數名稱</th>
-                        <th>收盤價 / 最新價</th>
-                        <th>漲跌幅</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>台股加權指數</td>
-                        <td>22,850.12 (參考)</td>
-                        <td class="text-up">+0.65%</td>
-                    </tr>
-                    <tr>
-                        <td>美國 30 年期公債 (US30-YR)</td>
-                        <td>5.66 (開5.62/高5.68)</td>
-                        <td class="text-up">+0.35%</td>
-                    </tr>
-                    <tr>
-                        <td>道瓊工業指數</td>
-                        <td>42,156.00</td>
-                        <td class="text-up">+0.42%</td>
-                    </tr>
-                    <tr>
-                        <td>那斯達克指數</td>
-                        <td>18,120.45</td>
-                        <td class="text-up">+0.88%</td>
-                    </tr>
-                    <tr>
-                        <td>費城半導體指數</td>
-                        <td>5,120.30</td>
-                        <td class="text-up">+1.45%</td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="container">
+    <!-- 標題與時間 -->
+    <header>
+        <h1>每日全球財經晨報與台股焦點</h1>
+        <div class="timestamp">📅 資料時間：2026-10-02 08:30</div>
+    </header>
+
+    <!-- 1. 市場數據表格 -->
+    <div class="section-title">📊 國際與台股重點指數速覽</div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>指數名稱</th>
+                    <th>收盤價</th>
+                    <th>漲跌幅</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>台股加權指數</td>
+                    <td>22,650.12</td>
+                    <td class="text-up">+0.65%</td>
+                </tr>
+                <tr>
+                    <td>美國 20 年期公債</td>
+                    <td>5.67</td>
+                    <td class="text-down">-1.62%</td>
+                </tr>
+                <tr>
+                    <td>美國 30 年期公債</td>
+                    <td>5.64</td>
+                    <td class="text-up">+0.35%</td>
+                </tr>
+                <tr>
+                    <td>道瓊工業指數</td>
+                    <td>42,120.50</td>
+                    <td class="text-up">+0.42%</td>
+                </tr>
+                <tr>
+                    <td>那斯達克指數</td>
+                    <td>18,100.25</td>
+                    <td class="text-down">-0.15%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 2. 國際與總經速覽 -->
+    <div class="section-title">🌍 國際與總經速覽</div>
+    <div class="prose-box">
+        <p><strong>債市動向：</strong>美國長天期公債（如20年期、30年期）近期維持在5.6%左右的高檔區間震盪，20年期公債收盤報5.67（跌幅1.62%）。顯示市場對於通膨黏著度及財政赤字擴大的擔憂未除，長端殖利率居高不下，牽動全球風險資產的評價動能。</p>
+        <p><strong>美股表現：</strong>美股四大指數維持高檔震盪整理，科技股受制於債券殖利率的高檔壓力表現略顯溫吞，資金在防禦型類股與半導體權值之間輪動。</p>
+    </div>
+
+    <!-- 3. 台股大盤解析 -->
+    <div class="section-title">📈 台股大盤盤勢解析</div>
+    <div class="prose-box">
+        <p><strong>今日盤面重點：</strong>台股在權值電子股帶領下試圖向上突圍，短線震盪走堅。大盤目前處於各主要均線糾結處，季線展現強勁的下檔支撐力道。</p>
+        <p><strong>支撐與壓力：</strong>上方短壓看季線與前高反壓區（約 22,800 點），下方重要支撐看守月線及 22,400 點整數關卡。量能若能溫和放大至 3,500 億元以上，有助於多方發動突破攻勢。</p>
+        <p><strong>法人與主流：</strong>外資期權佈局中性偏多，投信則持續在內資主導的中小型題材股中點火。主流族群聚焦於先進封裝、AI 伺服器供應鏈、網通及綠能重電等。</p>
+    </div>
+
+    <!-- 4. 精選 5 檔潛力台股 -->
+    <div class="section-title">🎯 精選 5 檔看漲優質潛力台股</div>
+
+    <!-- 股票 1 -->
+    <div class="card">
+        <div class="card-header">
+            <span class="stock-title">2330 台積電</span>
+            <span class="stock-tag">權值/先進封裝</span>
         </div>
-
-        <!-- 2. 國際與總經速覽 -->
-        <h2 class="section-title">2. 國際與總經速覽</h2>
-        <div class="card">
-            <p><strong>美光（MU）震撼財報點燃半導體多頭：</strong> 最新公佈的季度財報展現強悍爆發力，實際營收達 542.3 億美元（優於預期的 510.7 億美元），營收年增高達 379%、季增 308%，EPS 達 33.42 美元。執行長更明確指出，HBM（高頻寬記憶體）供不應求的緊張態勢將一路延續至 2027 年之後，整體記憶體產業超級循環確立，激勵全球半導體與 AI 供應鏈士氣。</p>
-            <p><strong>總經與債市動態：</strong> 美國 30 年期公債殖利率盤中在 5.62 至 5.68 之間震盪，反映市場對長期通膨與利率走勢保持觀望。然而，科技巨頭與 AI 基礎建設的強勁基本面，成功化解部分總經雜音，資金持續回流具備實質獲利支撐的高科技與權值股。</p>
-        </div>
-
-        <!-- 3. 台股大盤解析 -->
-        <h2 class="section-title">3. 台股大盤解析</h2>
-        <div class="card">
-            <p><strong>今日盤面重點：</strong> 受惠於美光財報超預期與 HBM 長期缺貨利多，台股今日電子權值與記憶體族群全面起匯，帶動大盤穩步走高。盤面資金聚焦於半導體先進製程、記憶體、AI 伺服器零組件及金融股法說題材。</p>
-            <p><strong>均線架構與支撐壓力：</strong> 大盤目前重新站穩短中期均線之上，月線與季線維持多頭排列。下檔支撐看月線關卡（約 22,500 點附近），上方強力壓力則看前波高點區間。量能若能維持溫和放大，有利於多頭續攻。</p>
-            <p><strong>籌碼與主流動向：</strong> 外資與投信近期在期現貨操作轉趨積極，尤其在記憶體（如南亞科、群聯等）與 AI 相關供應鏈出現法人回補買盤。金融股（如元大金、統一證等 9 月營收表現亮眼族群）亦展現抗跌撐盤力道，形成類股健康輪動格局。</p>
-        </div>
-
-        <!-- 4. 精選 5 檔看漲優質潛力台股 -->
-        <h2 class="section-title">4. 精選 5 檔看漲優質潛力台股</h2>
-        <div class="stock-grid">
-            <!-- 標的 1 -->
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-title">2408 南亞科</span>
-                    <span class="stock-tag">記憶體 / HBM</span>
+        <div class="card-body">
+            <p><strong>核心看多理由：</strong>全球半導體龍頭，3奈米及CoWoS先進封裝產能持續滿載，基本面極具強勢護城河，外資籌碼回補首選。</p>
+            <div class="price-box">
+                <div class="price-item">
+                    <span>建議進場區間</span>
+                    <strong class="text-entry">970 - 985 元</strong>
                 </div>
-                <div class="stock-body">
-                    <p><strong>核心看多理由：</strong> 受惠美光財報大好且直言 HBM 缺貨到 2027 年，DRAM 報價強勢看漲，庫存去化告段落，本業迎來爆發性轉機。</p>
-                    <div class="price-range">
-                        <div class="price-box">
-                            <span>建議進場區間</span>
-                            <strong class="buy-price">前日收盤附近量縮回測</strong>
-                        </div>
-                        <div class="price-box">
-                            <span>防守跌破價</span>
-                            <strong class="stop-price">月線支撐價位</strong>
-                        </div>
-                    </div>
+                <div class="price-item">
+                    <span>防守跌破價</span>
+                    <strong class="text-stop">945 元</strong>
                 </div>
             </div>
-
-            <!-- 標的 2 -->
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-title">8299 群聯</span>
-                    <span class="stock-tag">NAND Flash / IC設計</span>
-                </div>
-                <div class="stock-body">
-                    <p><strong>核心看多理由：</strong> 記憶體超級循環啟動，NAND 控制晶片需求水漲船高，高階 SSD 與企業級儲存方案出貨動能強勁，獲利能力看俏。</p>
-                    <div class="price-range">
-                        <div class="price-box">
-                            <span>建議進場區間</span>
-                            <strong class="buy-price">五日均線附近分批承接</strong>
-                        </div>
-                        <div class="price-box">
-                            <span>防守跌破價</span>
-                            <stop-price class="stop-price">跌破十日線</stop-price>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 標的 3 -->
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-title">2330 台積電</span>
-                    <span class="stock-tag">權值 / 半導體</span>
-                </div>
-                <div class="stock-body">
-                    <p><strong>核心看多理由：</strong> 晶圓代工龍頭穩居 AI 與先進製程核心，受惠美光財報帶動半導體信心，外資買盤歸隊，技術面呈現強勢多頭。</p>
-                    <div class="price-range">
-                        <div class="price-box">
-                            <span>建議進場區間</span>
-                            <strong class="buy-price">平盤震盪或量縮拉回時</strong>
-                        </div>
-                        <div class="price-box">
-                            <span>防守跌破價</span>
-                            <strong class="stop-price">強勢跳空缺口下緣</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 標的 4 -->
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-title">2885 元大金</span>
-                    <span class="stock-tag">金融 / 證券龍頭</span>
-                </div>
-                <div class="stock-body">
-                    <p><strong>核心看多理由：</strong> 9 月營收年增率表現優異名列前茅，台股日均量維持高檔使經紀與自營業務大賺，具備高殖利率與防禦性雙重優勢。</p>
-                    <div class="price-range">
-                        <div class="price-box">
-                            <span>建議進場區間</span>
-                            <strong class="buy-price">近期整理區間下緣</strong>
-                        </div>
-                        <div class="price-box">
-                            <span>防守跌破價</span>
-                            <strong class="stop-price">季線關鍵防守價</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 標的 5 -->
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-title">3661 世芯-KY</span>
-                    <span class="stock-tag">ASIC / AI 矽智財</span>
-                </div>
-                <div class="stock-body">
-                    <p><strong>核心看多理由：</strong> 北美雲端服務商（CSP）自研 AI 晶片開案量持續放大，高階 ASIC 需求強勁，營收成長能見度直達明年。</p>
-                    <div class="price-range">
-                        <div class="price-box">
-                            <span>建議進場區間</span>
-                            <strong class="buy-price">突破頸線量穩買點</strong>
-                        </div>
-                        <div class="price-box">
-                            <span>防守跌破價</span>
-                            <strong class="stop-price">跌破短波起漲點</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. 風險提示與警語聲明 -->
-        <div class="warning-box">
-            <h4>【風險提示與警語聲明】</h4>
-            <p>本晨報內容僅供參考，不構成任何投資買賣之邀約或建議。金融市場具高度波動性與不確定性，投資人應審慎評估自身財務狀況，並自負投資風險。過往績效不代表未來表現，操作時請務必設定好嚴格的停損停利機制。</p>
         </div>
     </div>
+
+    <!-- 股票 2 -->
+    <div class="card">
+        <div class="card-header">
+            <span class="stock-title">2317 鴻海</span>
+            <span class="stock-tag">AI伺服器/權值</span>
+        </div>
+        <div class="card-body">
+            <p><strong>核心看多理由：</strong>GB200伺服器出貨時程在即，第四季營收爆發力強，技術面突破短均線反壓，法人籌碼近期轉趨積極。</p>
+            <div class="price-box">
+                <div class="price-item">
+                    <span>建議進場區間</span>
+                    <strong class="text-entry">182 - 188 元</strong>
+                </div>
+                <div class="price-item">
+                    <span>防守跌破價</span>
+                    <strong class="text-stop">175 元</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 股票 3 -->
+    <div class="card">
+        <div class="card-header">
+            <span class="stock-title">3017 奇鋐</span>
+            <span class="stock-tag">散熱模組/AI概念</span>
+        </div>
+        <div class="card-body">
+            <p><strong>核心看多理由：</strong>液冷散熱技術領先者，隨著高階AI晶片功耗提升，水冷板與分歧管滲透率高速擴大，投信買盤連續進駐。</p>
+            <div class="price-box">
+                <div class="price-item">
+                    <span>建議進場區間</span>
+                    <strong class="text-entry">620 - 640 元</strong>
+                </div>
+                <div class="price-item">
+                    <span>防守跌破價</span>
+                    <strong class="text-stop">590 元</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 股票 4 -->
+    <div class="card">
+        <div class="card-header">
+            <span class="stock-title">1513 中興電</span>
+            <span class="stock-tag">重電綠能/電網強韌</span>
+        </div>
+        <div class="card-body">
+            <p><strong>核心看多理由：</strong>台電強韌電網計畫核心受惠者，在手訂單能見度直達2027年，基本面獲利穩健，技術面築底完成準備向上。</p>
+            <div class="price-box">
+                <div class="price-item">
+                    <span>建議進場區間</span>
+                    <strong class="text-entry">165 - 171 元</strong>
+                </div>
+                <div class="price-item">
+                    <span>防守跌破價</span>
+                    <strong class="text-stop">158 元</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 股票 5 -->
+    <div class="card">
+        <div class="card-header">
+            <span class="stock-title">3231 緯創</span>
+            <span class="stock-tag">AI PC/伺服器</span>
+        </div>
+        <div class="card-body">
+            <p><strong>核心看多理由：</strong>AI伺服器基板（MB）主要供應商，受惠CSP大廠資本支出擴增，股價基期相對同業偏低，具備補漲潛力。</p>
+            <div class="price-box">
+                <div class="price-item">
+                    <span>建議進場區間</span>
+                    <strong class="text-entry">112 - 116 元</strong>
+                </div>
+                <div class="price-item">
+                    <span>防守跌破價</span>
+                    <strong class="text-stop">106 元</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 風險提示 -->
+    <div class="risk-warning">
+        <strong>⚠️ 風險提示與警語聲明：</strong>
+        本晨報內容僅供參考，不構成任何投資買賣之邀約或建議。金融市場投資具有高度風險，美債殖利率波動、地緣政治風險及匯率變動皆可能影響盤勢走向。投資人應獨立審判、審慎評估自身風險承受能力，並自負盈虧。
+    </div>
+
+</div>
+
 </body>
 </html>
+```
